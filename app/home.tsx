@@ -7,7 +7,7 @@ const Home = () => {
     return (
         <View>
             <Text>Ventana home</Text>
-            <TouchableOpacity onPress={() => router.push("/")}><Text>Index</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/")}><Text>Registrate</Text></TouchableOpacity>
         </View>
     )
 }
