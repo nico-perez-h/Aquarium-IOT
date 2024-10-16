@@ -5,13 +5,31 @@ import { useNavigation, useRouter } from 'expo-router'
 const Index = () => {
   const router = useRouter();
   return (
-    <View>
-      <Text>Hola Juan</Text>
-      <TouchableOpacity onPress={() => router.push("/home")}><Text>Ir a home</Text></TouchableOpacity>
+    <View style={styles.contMain}>
+      <Text >Acuario IOT</Text>
+      <TouchableOpacity onPress={() => router.push("/home")}>
+        <Text style={styles.contButtonText}>Ir a home</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/loginTab")}>
+        <Text style={styles.contButtonText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/firstPage")}>
+        <Text style={styles.contButtonText}>Pagina de Incio</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 export default Index
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  contMain: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 375,
+    height: 710,
+  },
+  contButtonText: {
+    fontSize:20
+  }
+})
