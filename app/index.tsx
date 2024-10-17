@@ -16,6 +16,9 @@ const Index = () => {
       <TouchableOpacity onPress={() => router.push("/firstPage")}>
         <Text style={styles.contButtonText}>Pagina de Incio</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/iconos")}>
+        <Text style={styles.contButtonText}>Pagina de Iconos</Text>
+      </TouchableOpacity>
     </View>
   )
 }
