@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, TouchableOpacityComponent, View } from 'react-native'
 import React from 'react'
 import { useNavigation, useRouter } from 'expo-router'
-
+import Nav from '../components/nav'
 const Index = () => {
   const router = useRouter();
   return (
@@ -19,6 +19,7 @@ const Index = () => {
       <TouchableOpacity onPress={() => router.push("/iconos")}>
         <Text style={styles.contButtonText}>Pagina de Iconos</Text>
       </TouchableOpacity>
+      <Nav/>
     </View>
   )
 }
