@@ -2,10 +2,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { router } from 'expo-router';
 import Icon from "react-native-vector-icons/FontAwesome6";
+import * as Animatable from 'react-native-animatable'; // Importa la biblioteca
 
 const Nav = () => {
   return (
-    <View style={styles.navbarContainer}>
+    <Animatable.View animation="slideInUp" duration={500} style={styles.navbarContainer}>
       <View style={styles.contNav}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => router.push("/")}>
           <Icon name="house" size={30} color="#5dc1b9" />
@@ -15,12 +16,12 @@ const Nav = () => {
           <Icon name="bell" size={30} color="#5dc1b9" solid />
           <Text style={styles.iconText}>Notificaciones</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => router.push("/loginTab")}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => router.push("/")}>
           <Icon name="user" size={30} color="#5dc1b9" solid />
           <Text style={styles.iconText}>Perfil</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Animatable.View>
   );
 };
 
