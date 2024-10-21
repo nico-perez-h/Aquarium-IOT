@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { router } from 'expo-router'
 import Icon from "react-native-vector-icons/FontAwesome6";
+import Nav from '../components/nav';
 
 const Iconos = () => {
   return (
@@ -20,6 +21,7 @@ const Iconos = () => {
       <Icon name="sun" size={30} color="#FFD700" solid />
       <Icon name="react" size={30} color="black" />
       <Icon name="6" size={30} color="blue" />
+      <Nav/>
     </View>
   )
 }
