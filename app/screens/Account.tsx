@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
   contText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#BAD6EB'
+    color: '#e3ae64'
   }
 })
