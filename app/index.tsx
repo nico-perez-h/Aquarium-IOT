@@ -3,6 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Account, Dashboard, Inicio, Notifications } from './screens'
+import TabButton from '../components/TabButton'
 
 const Tab = createBottomTabNavigator()
 
@@ -17,54 +18,56 @@ const Index = () => {
     },
     {
       id: 2,
-      title: 'Account',
-      screen: 'Account',
-      icon: 'user',
-      Component: Account,
-    },
-    {
-      id: 3,
       title: 'Dashboard',
       screen: 'Dashboard',
       icon: 'dashboard',
       Component: Dashboard,
     },
     {
-      id: 4,
+      id: 3,
       title: 'Notifications',
       screen: 'Notifications',
       icon: 'bell',
       Component: Notifications,
     },
+    {
+      id: 4,
+      title: 'Account',
+      screen: 'Account',
+      icon: 'user',
+      Component: Account,
+    },
   ]
   return (
-    
-      <Tab.Navigator
-        initialRouteName='Inicio'
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        {
-          tabs.map(x =>
-            <Tab.Screen
-              key={x.id}
-              name={x.screen}
-              component={x.Component}
-            >
 
-            </Tab.Screen>
-          )
-        }
-
-      </Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName={'Inicio'}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: styles.tabBar
+      }}
+    >
+      {
+        tabs.map((item, index) =>
+          <Tab.Screen
+            key={item.id}
+            name={item.screen}
+            component={item.Component}
+            options={{
+              tabBarShowLabel: false,
+              tabBarButton:(props) => <TabButton item={item} {...props}/>
+            }}
+          />
+        )
+      }
+    </Tab.Navigator>
   )
 }
 
 export default Index
 
 const styles = StyleSheet.create({
-  /* tabBar: {
+  tabBar: {
     height: 70,
     position: 'absolute',
     bottom: 25,
@@ -74,5 +77,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.5,
     borderColor: '#dadada'
-  } */
+  }
 })
