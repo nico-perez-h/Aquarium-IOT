@@ -12,8 +12,7 @@ export default ({ item, accessibilityState, onPress }) => {
 
   useEffect(() => {
     handleAnimated()
-  },
-    [accessibilityState.selected])
+  },[accessibilityState.selected])
 
   const handleAnimated = () => {
     Animated.parallel([
