@@ -1,0 +1,6 @@
+Colores para el acuario:
+1: #76D0CB
+2: #A4E3C1
+3: #9DD3E3
+4: #8AD9CB
+5: #98B7D3
