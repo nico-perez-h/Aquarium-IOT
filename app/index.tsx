@@ -3,7 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Account, Dashboard, Inicio, Notifications } from './screens'
-import TabButton from '../components/TabButton'
+import TabButton from '../components/TabButton';
 
 const Tab = createBottomTabNavigator()
 
