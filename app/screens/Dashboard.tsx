@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#BAD6EB'
+    fontSize: 24,
+    fontWeight: 'thin',
+    color: 'black'
   }
 })
