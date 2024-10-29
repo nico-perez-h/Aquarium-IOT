@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react"
 import { StyleSheet, Animated, TouchableOpacity, Text, View } from "react-native"
 import Material from 'react-native-vector-icons/FontAwesome'
+import Colors from "./Colors"
+
 
 export default ({ item, accessibilityState, onPress }) => {
   const animatedValues = {
@@ -12,7 +14,7 @@ export default ({ item, accessibilityState, onPress }) => {
 
   useEffect(() => {
     handleAnimated()
-  },[accessibilityState.selected])
+  }, [accessibilityState.selected])
 
   const handleAnimated = () => {
     Animated.parallel([
@@ -61,12 +63,12 @@ export default ({ item, accessibilityState, onPress }) => {
       <Animated.View
         style={[styles.contButton, translateStyles]}>
         <Animated.View
-          style={[{ width: 50, height: 50, borderRadius: 100, position: 'absolute', backgroundColor: '#76D0CB' },
+          style={[{ width: 50, height: 50, borderRadius: 100, position: 'absolute', backgroundColor: 'white' },
             scaleStyles]} />
         <Material
-          name={item.icon} color={accessibilityState.selected ? '#fff' : '#76D0CB'} size={22} />
+          name={item.icon} color={accessibilityState.selected ? Colors.interactiveSelected : 'white'} size={22} />
       </Animated.View>
-      <Animated.Text style={[styles.contTitle, {opacity: scale}]}>{item.title}</Animated.Text>
+      <Animated.Text style={[styles.contTitle, { opacity: scale }]}>{item.title}</Animated.Text>
     </TouchableOpacity>
 
   )
@@ -85,18 +87,18 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden'
   },
   contTitle: {
     fontSize: 10,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     textAlign: 'center',
-    color: '#76D0CB',
+    color: 'white',
     position: 'absolute',
-    bottom:20,
+    bottom: 20,
   },
 })
 
