@@ -3,7 +3,8 @@ const Colors = {
   interactive: '#F9A266',
   interactiveSelected: '#F26627',
   text: '#EFEEEE',
-  secondText: '#023047'
+  secondText: '#023047',
+  colorBacksecundario: '#DFDCD4'
 
 };
 
