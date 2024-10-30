@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Account, Dashboard, Inicio, Notifications } from './screens'
 import TabButton from '../components/TabButton';
+import Colors from '@/components/Colors'
 
 const Tab = createBottomTabNavigator()
 
@@ -11,7 +12,7 @@ const Index = () => {
   const tabs = [
     {
       id: 1,
-      title: 'Inicio',
+      title: 'Home',
       screen: 'Inicio',
       icon: 'home',
       Component: Inicio,
@@ -77,5 +78,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.5,
     borderColor: '#dadada',
+    backgroundColor: Colors.interactive
   }
 })
