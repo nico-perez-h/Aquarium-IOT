@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6'
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router'
+import { router } from 'expo-router';
+import GoogleIcon from '@/assets/svg/GoogleIcon';
+
 
 const Register = () => {
   return (
@@ -20,26 +22,28 @@ const Register = () => {
         <TextInput
           style={styles.contInput}
           placeholder='User'
-          placeholderTextColor='#E4DEF9'
+          placeholderTextColor='#9B8CB3'
         />
         <TextInput
           style={styles.contInput}
           placeholder='example@gmail.com'
           keyboardType="email-address"
-          placeholderTextColor='#E4DEF9'
+          placeholderTextColor='#9B8CB3'
         />
         <TextInput
           style={styles.contInput}
           placeholder='Password'
           secureTextEntry
-          placeholderTextColor='#E4DEF9'
+          placeholderTextColor='#9B8CB3'
         />
       </View>
       <View style={styles.contButton}>
         <LinearGradient
-          // Button Linear Gradient
           colors={['#605399', '#ADA1E6']}
-          style={styles.button}>
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.button}
+        >
           <Text style={styles.contButtonText}>SIGN UP</Text>
         </LinearGradient>
       </View>
@@ -47,6 +51,22 @@ const Register = () => {
         <View style={styles.contLine} />
         <Text style={styles.contTextline}>or</Text>
         <View style={styles.contLine} />
+      </View>
+      <View style={styles.mainFooter}>
+        <Text style={styles.contFooterText}> Social Media Signup</Text>
+        <View style={styles.contFooterSvg}>
+          <View style={styles.contIcons}>
+            <GoogleIcon />
+          </View>
+        </View>
+      </View>
+      <View style={styles.contLogin}>
+        <Text style={styles.contLoginText}>Already have an account?</Text>
+        <TouchableOpacity>
+          <Text
+            style={styles.contLoginTextLogin}
+            onPress={() => router.push('/screens/login')}>Sign in</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -69,13 +89,15 @@ const styles = StyleSheet.create({
   },
   contTitle: {
     color: '#605399',
-    fontSize: 60
+    fontSize: 60,
+    fontWeight: 'bold'
   },
   contSubtitle: {
     color: '#ADA1E6',
     fontSize: 30,
     marginTop: 15,
-    marginLeft: .5
+    marginLeft: .5,
+    fontWeight: '300'
   },
   contInputs: {
     marginTop: 30,
@@ -94,14 +116,20 @@ const styles = StyleSheet.create({
   contButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 50,
+    marginHorizontal: 20,
+    marginTop: 15,
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 4,  
-    backgroundColor: 'black',
+    borderRadius: 4,
+  },
+  button: {
+    width: '90%',
+    padding: 7,
+    alignItems: 'center',
+    borderRadius: 5,
   },
   contButtonText: {
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
@@ -110,27 +138,59 @@ const styles = StyleSheet.create({
   contLines: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
+    marginTop: 15,
     marginHorizontal: 50
-  }, // Espacio vertical alrededor de la línea},
+  },
   contLine: {
     flex: 1,
     height: 1, // Altura de la línea
     backgroundColor: '#023047',
   },
   contTextline: {
+    color: '#605399',
     marginHorizontal: 10, // Espacio a los lados del texto
-    color: '#023047', // Color del texto
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: 'bold'
   },
-  button: {
-    padding: 15,
+  mainFooter: {
     alignItems: 'center',
+    alignSelf: 'center',
+    width: '90%',
+    paddingVertical: 10, // Espaciado vertical para el contenido del footer
+    marginTop: 25,
     borderRadius: 5,
   },
-  text: {
-    backgroundColor: 'transparent',
-    fontSize: 15,
-    color: '#fff',
+
+  contFooterText: {
+    color: '#ADA1E6',
+    fontSize: 20,
+    fontWeight: '400'
   },
+  contFooterSvg: {
+    flexDirection: 'row',      // Para alinear los íconos en fila
+    justifyContent: 'center',  // Para centrar los íconos
+    alignItems: 'center',      // Para alinear los íconos verticalmente
+    marginTop: 15,             // Espacio superior
+  },
+  contIcons: {
+    flexDirection: 'row',      // Alinea los íconos en fila
+    justifyContent: 'space-around', // Espaciado entre los íconos
+    width: '70%',              // Ajusta el ancho según sea necesario
+  },
+  contLogin: {
+    flexDirection: 'row',
+    marginLeft: 15,
+    marginTop: 45
+  },
+  contLoginText: {
+    color: '#ADA1E6',
+    fontSize: 15,
+    fontWeight: '400'
+  },
+  contLoginTextLogin: {
+    color: '#605399',
+    fontSize: 15,
+    fontWeight: '800',
+    marginLeft: 15,
+  }
 })
