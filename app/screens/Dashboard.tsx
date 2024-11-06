@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Cards from '@/components/Cards'
 
 const Dashboard = () => {
   return (
-    <View style={styles.contMain}>
-      <Text style={styles.contText}>Pantalla de Dashboard</Text>
+    <View style={styles.dashboardContainer}>
+      <Cards title="Temperature" value={25.3} unit="°C" color="#FF5733" />
+      <Cards title="pH Level" value={7.4} unit="" color="#33FF57" />
+      <Cards title="Water Level" value={50} unit="%" color="#3375FF" />
     </View>
   )
 }
@@ -12,14 +15,11 @@ const Dashboard = () => {
 export default Dashboard
 
 const styles = StyleSheet.create({
-  contMain: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  dashboardContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: 20,
+    marginTop: 20,
   },
-  contText: {
-    fontSize: 24,
-    fontWeight: 'thin',
-    color: 'black'
-  }
 })
