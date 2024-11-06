@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6'
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import GoogleIcon from '@/assets/svg/GoogleIcon';
+import CustomButton from '@/components/CustomButton';
 
 const Login = () => {
   return (
@@ -32,14 +33,9 @@ const Login = () => {
         />
       </View>
       <View style={styles.contButton}>
-        <LinearGradient
-          colors={['#605399', '#ADA1E6']}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          style={styles.button}
-        >
-          <Text style={styles.contButtonText}>LOGIN</Text>
-        </LinearGradient>
+        <CustomButton onPress={() => console.log('Button Login press')}>
+          LOGIN
+        </CustomButton>
         <Text>Forgot Password?</Text>
       </View>
       <View style={styles.contLines}>
@@ -60,7 +56,7 @@ const Login = () => {
         <TouchableOpacity>
           <Text
             style={styles.contLoginTextLogin}
-            onPress={() => router.push('/screens/login')}>Sign in</Text>
+            onPress={() => router.push('/screens/register')}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>
