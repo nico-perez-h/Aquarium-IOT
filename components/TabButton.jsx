@@ -4,32 +4,35 @@ import Material from 'react-native-vector-icons/FontAwesome'
 import Colors from "./Colors"
 
 
-export default ({ item, accessibilityState, onPress }) => {
+export default function TabButton({ item, accessibilityState, onPress }) {
   const animatedValues = {
     translate: useRef(new Animated.Value(0)).current,
     scale: useRef(new Animated.Value(0)).current,
-  }
+  };
 
   const { translate, scale } = animatedValues
 
   useEffect(() => {
-    handleAnimated()
-  }, [accessibilityState.selected])
+    if (accessibilityState && accessibilityState.selected !== undefined) {
+      handleAnimated();
+    }
+  }, [accessibilityState?.selected]);
 
   const handleAnimated = () => {
     Animated.parallel([
       Animated.timing(translate, {
-        toValue: accessibilityState.selected ? 1 : 0,
+        toValue: accessibilityState?.selected ? 1 : 0,
         duration: 400,
-        useNativeDriver: false
+        useNativeDriver: false,
       }),
       Animated.timing(scale, {
-        toValue: accessibilityState.selected ? 1 : 0,
+        toValue: accessibilityState?.selected ? 1 : 0,
         duration: 250,
-        useNativeDriver: false
-      })
-    ]).start()
-  }
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
 
   const translateStyles = {
     transform: [
