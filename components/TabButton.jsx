@@ -63,10 +63,10 @@ export default ({ item, accessibilityState, onPress }) => {
       <Animated.View
         style={[styles.contButton, translateStyles]}>
         <Animated.View
-          style={[{ width: 50, height: 50, borderRadius: 100, position: 'absolute', backgroundColor: 'white' },
+          style={[{ width: 50, height: 50, borderRadius: 100, position: 'absolute', backgroundColor: Colors.background },
             scaleStyles]} />
         <Material
-          name={item.icon} color={accessibilityState.selected ? Colors.interactiveSelected : 'white'} size={22} />
+          name={item.icon} color={accessibilityState.selected ? Colors.title : Colors.background} size={22} />
       </Animated.View>
       <Animated.Text style={[styles.contTitle, { opacity: scale }]}>{item.title}</Animated.Text>
     </TouchableOpacity>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white',
+    color: Colors.background,
     position: 'absolute',
     bottom: 20,
   },

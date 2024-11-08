@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.5,
     borderColor: '#dadada',
-    backgroundColor: Colors.interactive
+    backgroundColor: Colors.title
   }
 })

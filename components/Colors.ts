@@ -1,11 +1,8 @@
 const Colors = {
-  background: '#325D79',
-  interactive: '#F9A266',
-  interactiveSelected: '#F26627',
-  text: '#EFEEEE',
-  secondText: '#023047',
-  colorBacksecundario: '#DFDCD4'
-
+  title: '#2A384C',
+  subTitle: '#A0B2C2',
+  previous: '#D1D9DF',
+  background: '#F0F0F0',
 };
 
 export default Colors;
