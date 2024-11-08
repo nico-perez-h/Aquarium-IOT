@@ -56,7 +56,13 @@ const Index = () => {
             component={item.Component}
             options={{
               tabBarShowLabel: false,
-              tabBarButton:(props) => <TabButton item={item} {...props}/>
+              tabBarButton: (props) => (
+                <TabButton
+                  item={item}
+                  accessibilityState={props.accessibilityState}
+                  onPress={props.onPress}
+                />
+              )
             }}
           />
         )
