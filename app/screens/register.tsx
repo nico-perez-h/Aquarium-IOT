@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import GoogleIcon from '@/assets/svg/GoogleIcon';
 import CustomButton from '@/components/CustomButton';
+import Colors from '@/components/Colors';
 
 
 const Register = () => {
@@ -12,7 +13,7 @@ const Register = () => {
     <View style={styles.contMain}>
       <View style={styles.contIcon}>
         <TouchableOpacity onPress={() => router.push('/')}>
-          <Icon name="arrow-left" size={30} color='#023047' />
+          <Icon name="arrow-left" size={30} color='black' />
         </TouchableOpacity>
       </View>
       <View style={styles.contText}>
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   contTitle: {
-    color: '#605399',
+    color: Colors.title,
     fontSize: 60,
     fontWeight: 'bold'
   },
   contSubtitle: {
-    color: '#ADA1E6',
+    color: Colors.subTitle,
     fontSize: 30,
     marginTop: 15,
     marginLeft: .5,

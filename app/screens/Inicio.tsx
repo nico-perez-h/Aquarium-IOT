@@ -23,20 +23,18 @@ export default Inicio
 const styles = StyleSheet.create({
   contMain: {
     flex: 1,
-    margin:30,
+    margin: 30,
     backgroundColor: Colors.background,
   },
   contHead: {
-    fontFamily: 'montserrat-light',
     fontSize: 50,
     color: Colors.title,
     fontWeight: 'bold'
   },
   contSubitle: {
-    fontFamily: 'montserrat-light',
     fontSize: 20,
     color: Colors.subTitle,
-    fontStyle:'italic'
-
+    fontStyle: 'italic',
+    fontWeight:'200'
   },
 })

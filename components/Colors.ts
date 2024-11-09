@@ -1,5 +1,5 @@
 const Colors = {
-  title: '#2A384C',
+  title: '#304A6E',
   subTitle: '#A0B2C2',
   previous: '#D1D9DF',
   background: '#F0F0F0',
