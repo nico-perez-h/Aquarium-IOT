@@ -62,7 +62,7 @@ const Register = () => {
         <TouchableOpacity>
           <Text
             style={styles.contLoginTextLogin}
-            onPress={() => router.push('/screens/login')}>Sign in</Text>
+            onPress={() => router.push('/login')}>Sign in</Text>
         </TouchableOpacity>
       </View>
     </View>
