@@ -4,9 +4,20 @@ import Icon from 'react-native-vector-icons/FontAwesome6'
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import GoogleIcon from '@/assets/svg/GoogleIcon';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/CustomButton'
+import { useUserContext } from '@/context/userContext';
 
 const Login = () => {
+
+  const { setUser } = useUserContext();
+
+  const handleLogin = () => {
+    setUser ({
+      id: 'a',
+      name:'Mau'
+    })
+  }
+
   return (
     <View style={styles.contMain}>
       <View style={styles.contIcon}>
@@ -33,10 +44,11 @@ const Login = () => {
         />
       </View>
       <View style={styles.contButton}>
-        <CustomButton onPress={() => console.log('Button Login press')}>
+        <CustomButton 
+        onPress={handleLogin}>
           LOGIN
         </CustomButton>
-        <Text>Forgot Password?</Text>
+        {/* <Text>Forgot Password?</Text> */}
       </View>
       <View style={styles.contLines}>
         <View style={styles.contLine} />
@@ -56,7 +68,7 @@ const Login = () => {
         <TouchableOpacity>
           <Text
             style={styles.contLoginTextLogin}
-            onPress={() => router.push('/screens/register')}>Sign up</Text>
+            onPress={() => router.push('/register')}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>
