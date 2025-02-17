@@ -2,7 +2,10 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Account, Dashboard, Inicio, Notifications } from '../screens'
+import Account from '../screens/Account'
+import Dashboard from '../screens/Dashboard'
+import Inicio from '../screens/Inicio'
+import Notifications from '../screens/Notifications'
 import TabButton from '../../components/TabButton';
 import Colors from '@/components/Colors'
 

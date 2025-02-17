@@ -3,6 +3,7 @@
     "name": "acuarioIOT",
     "slug": "acuarioIOT",
     "version": "1.0.0",
+    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "acuario-iot",
