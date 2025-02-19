@@ -1,18 +1,103 @@
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { router } from "expo-router";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
 import Colors from "@/components/Colors";
+import { db, collection, addDoc } from "../config/firebaseConfig";
 
 const Register = () => {
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ user: "", email: "", password: "" });
+
+  const validateField = (
+    field: "user" | "email" | "password",
+    value: string
+  ) => {
+    let errorMessage = "";
+
+    switch (field) {
+      case "user":
+        if (!value.trim()) {
+          errorMessage = "Username is required";
+        } else if (value.length < 3) {
+          errorMessage = "Username must be at least 3 characters";
+        }
+        break;
+
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value.trim()) {
+          errorMessage = "Email is required";
+        } else if (!emailRegex.test(value)) {
+          errorMessage = "Enter a valid email address";
+        }
+        break;
+
+      case "password":
+        if (!value.trim()) {
+          errorMessage = "Password is required";
+        } else if (value.length < 6) {
+          errorMessage = "Password must be at least 6 characters";
+        }
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: errorMessage }));
+  };
+
+  const handleSignUp = async () => {
+    // Validación de campos vacíos
+    if (!user.trim() || !email.trim() || !password.trim()) {
+      Alert.alert("Error", "All fields are required!");
+      return;
+    }
+
+    // Validación del email con una expresión regular
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Error", "Please enter a valid email address!");
+      return;
+    }
+
+    // Validación del nombre de usuario (mínimo 3 caracteres)
+    if (user.length < 3) {
+      Alert.alert("Error", "Username must be at least 3 characters long!");
+      return;
+    }
+
+    // Validación de la contraseña (mínimo 6 caracteres)
+    if (password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters long!");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "users"), {
+        username: user,
+        email: email,
+        password: password, // ⚠️ RECOMENDACIÓN: Encripta la contraseña antes de guardarla
+        createdAt: new Date(),
+      });
+
+      Alert.alert("Success", "User registered successfully!");
+      router.push("/login"); // Redirigir a la pantalla de login
+    } catch (error) {
+      Alert.alert("Error", "Could not register user.");
+      console.error("Error adding document: ", error);
+    }
+  };
+
   return (
     <View style={styles.contMain}>
       <View style={styles.contIcon}>
@@ -29,24 +114,46 @@ const Register = () => {
           style={styles.contInput}
           placeholder="User"
           placeholderTextColor="#9B8CB3"
+          value={user}
+          onChangeText={(text) => {
+            setUser(text);
+            validateField("user", text);
+          }}
         />
+        {errors.user ? (
+          <Text style={styles.errorText}>{errors.user}</Text>
+        ) : null}
         <TextInput
           style={styles.contInput}
           placeholder="example@gmail.com"
           keyboardType="email-address"
           placeholderTextColor="#9B8CB3"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            validateField("email", text);
+          }}
         />
+        {errors.email ? (
+          <Text style={styles.errorText}>{errors.email}</Text>
+        ) : null}
         <TextInput
           style={styles.contInput}
           placeholder="Password"
           secureTextEntry
           placeholderTextColor="#9B8CB3"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+            validateField("password", text);
+          }}
         />
+        {errors.password ? (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        ) : null}
       </View>
       <View style={styles.contButton}>
-        <CustomButton onPress={() => console.log("Button sign up press")}>
-          SIGN UP
-        </CustomButton>
+        <CustomButton onPress={handleSignUp}>SIGN UP</CustomButton>
       </View>
       <View style={styles.contLines}>
         <View style={styles.contLine} />
@@ -77,7 +184,6 @@ const Register = () => {
 };
 
 export default Register;
-
 const styles = StyleSheet.create({
   contMain: {
     width: "100%",
@@ -107,6 +213,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 30,
     marginRight: 50,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 10,
   },
   contInput: {
     height: 50,
