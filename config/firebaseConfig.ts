@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 const firebaseConfig = {
   apiKey:"AIzaSyCoo1V_PrYSmWFo2gL-unKpBnqWX5K4qHA",
   authDomain: "aquariumiot-4e46a.firebaseapp.com",
@@ -12,4 +12,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export { db };
+export { db, collection, addDoc };
