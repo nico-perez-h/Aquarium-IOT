@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome6'
-import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import GoogleIcon from '@/assets/svg/GoogleIcon';
 import CustomButton from '@/components/CustomButton'
@@ -16,13 +15,17 @@ const Login = () => {
       id: 'a',
       name:'Mau'
     })
+    
+    //redirigir a Inicio
+    router.push('/screens/Inicio')
+
   }
 
   return (
     <View style={styles.contMain}>
       <View style={styles.contIcon}>
         <TouchableOpacity onPress={() => router.push('/')}>
-          <Icon name="arrow-left" size={30} color='#023047' />
+          <FontAwesome5 name="arrow-right" size={30} color='#023047' />
         </TouchableOpacity>
       </View>
       <View style={styles.contText}>

@@ -6,7 +6,7 @@ import { router } from 'expo-router'
 const Index = () => {
   return (
     <View style={styles.conMain}>
-      <Text>Hola</Text>
+      <Text>AQUALOGIC</Text>
       <CustomButton onPress={() => router.push('/login')}>
         LOGIN
       </CustomButton>
