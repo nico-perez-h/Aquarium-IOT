@@ -17,7 +17,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (user) {
-      router.push("/home");
+      router.push("/screens/Inicio");
       AsyncStorage.setItem("userId", user.id);
     } else {
       router.push("/");

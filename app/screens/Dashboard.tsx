@@ -1,25 +1,59 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Cards from '@/components/Cards'
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { db } from "@/config/firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 
-const Dashboard = () => {
+const Notifications = () => {
+  // Función para agregar datos a Firestore
+  const addDataToFirestore = async () => {
+    try {
+      // Especifica la colección donde quieres agregar los datos
+      const docRef = await addDoc(collection(db, "users"), {
+        name: "Juan Menacho",
+        email: "juanperez@example.com",
+        age: 25,
+      });
+      console.log("Documento agregado con ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error agregando documento: ", e);
+    }
+  };
+
   return (
-    <View style={styles.dashboardContainer}>
-      <Cards title="Temperature" value={25.3} unit="°C" color="#FF5733" />
-      <Cards title="pH Level" value={7.4} unit="" color="#33FF57" />
-      <Cards title="Water Level" value={50} unit="%" color="#3375FF" />
+    <View style={styles.contMain}>
+      <Text style={styles.contText}>Pantalla de dashboard</Text>
+      <TouchableOpacity style={styles.button} onPress={addDataToFirestore}>
+        <Text style={styles.buttonText}>Agregar datos a Firestore</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Notifications;
 
 const styles = StyleSheet.create({
-  dashboardContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    padding: 20,
-    marginTop: 20,
+  contMain: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-})
+  contText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#BAD6EB",
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: "#4CAF50", // Verde
+    padding: 12,
+    borderRadius: 5,
+    marginVertical: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
+  },
+});

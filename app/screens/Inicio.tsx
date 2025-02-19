@@ -1,40 +1,65 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import Colors from '@/components/Colors'
-import { Link, router } from 'expo-router'
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { router } from "expo-router"; // Importa el router para la navegación
+import Colors from "@/components/Colors"; // Tu archivo de colores
 
 const Inicio = () => {
   return (
     <View style={styles.contMain}>
       <Text style={styles.contHead}>AquaLogic</Text>
-      <Text style={styles.contSubitle}>Lógica precisa para un ambiente perfecto</Text>
-      <TouchableOpacity>
-        <Text onPress={() => router.push('/screens/login')}>Ir al login</Text>
-      </TouchableOpacity>
-      <Link href="/screens/register">
-        <Text>Ir a Register</Text>
-      </Link>
-    </View>
-  )
-}
+      <Text style={styles.contSubitle}>
+        Lógica precisa para un ambiente perfecto
+      </Text>
 
-export default Inicio
+      {/* Botones de navegación */}
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Dashboard")}>
+        <Text style={styles.buttonText}>Ir al Dashboard</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Notifications")}>
+        <Text style={styles.buttonText}>Notificaciones</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Account")}>
+        <Text style={styles.buttonText}>Cuenta</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default Inicio;
 
 const styles = StyleSheet.create({
   contMain: {
     flex: 1,
     margin: 30,
-    backgroundColor: Colors.background,
+    justifyContent: "center", // Centra el contenido
+    alignItems: "center", // Centra los elementos horizontalmente
   },
   contHead: {
     fontSize: 50,
     color: Colors.title,
-    fontWeight: 'bold'
+    fontWeight: "bold",
+    marginBottom: 20, // Separación entre el título y el subtítulo
   },
   contSubitle: {
     fontSize: 20,
     color: Colors.subTitle,
-    fontStyle: 'italic',
-    fontWeight:'200'
+    fontStyle: "italic",
+    fontWeight: "200",
+    marginBottom: 40, // Separación entre el subtítulo y los botones
   },
-})
+  button: {
+    backgroundColor:"green", // Color de fondo del botón
+    padding: 12,
+    borderRadius: 5,
+    marginVertical: 10, // Espaciado entre botones
+    width: "80%", // Ajuste del ancho del botón
+    alignItems: "center", // Centra el texto dentro del botón
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "white", // Color del texto dentro del botón
+    fontWeight: "bold",
+  },
+});
