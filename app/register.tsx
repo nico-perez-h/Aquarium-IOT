@@ -1,5 +1,8 @@
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -7,21 +10,22 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import Icon from "react-native-vector-icons/FontAwesome6";
 import { router } from "expo-router";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
 import Colors from "@/components/Colors";
-import { db, collection, addDoc } from "../config/firebaseConfig";
+import { db } from "../src/config/firebaseConfig"; // Ajusta la ruta si es necesario
+import { addDoc, collection } from "firebase/firestore";
 
 const Register = () => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ user: "", email: "", password: "" });
+  const [confirmPassword, setConfirmPassword] = useState(""); // Nuevo estado para la confirmación de la contraseña
+  const [errors, setErrors] = useState({ user: "", email: "", password: "", confirmPassword: "" });
 
   const validateField = (
-    field: "user" | "email" | "password",
+    field: "user" | "email" | "password" | "confirmPassword",
     value: string
   ) => {
     let errorMessage = "";
@@ -51,6 +55,12 @@ const Register = () => {
           errorMessage = "Password must be at least 6 characters";
         }
         break;
+
+      case "confirmPassword":
+        if (value !== password) {
+          errorMessage = "Passwords do not match";
+        }
+        break;
     }
 
     setErrors((prev) => ({ ...prev, [field]: errorMessage }));
@@ -58,7 +68,7 @@ const Register = () => {
 
   const handleSignUp = async () => {
     // Validación de campos vacíos
-    if (!user.trim() || !email.trim() || !password.trim()) {
+    if (!user.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       Alert.alert("Error", "All fields are required!");
       return;
     }
@@ -82,108 +92,146 @@ const Register = () => {
       return;
     }
 
+    // Validación de la coincidencia de las contraseñas
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match!");
+      return;
+    }
+
     try {
       await addDoc(collection(db, "users"), {
         username: user,
         email: email,
-        password: password, // ⚠️ RECOMENDACIÓN: Encripta la contraseña antes de guardarla
+        password: password,
         createdAt: new Date(),
       });
-
-      Alert.alert("Success", "User registered successfully!");
-      router.push("/login"); // Redirigir a la pantalla de login
-    } catch (error) {
-      Alert.alert("Error", "Could not register user.");
-      console.error("Error adding document: ", error);
+      Alert.alert("Éxito", "Usuario registrado correctamente!");
+    
+      // Limpiar los campos
+      setUser("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword(""); // Limpiar el campo de confirmación
+    
+      // Redirigir al login
+      router.push("/login");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al agregar documento: ", error.message);
+        Alert.alert("Error", "No se pudo registrar al usuario.");
+      } else {
+        console.error("Error desconocido: ", error);
+        Alert.alert("Error", "Ocurrió un error desconocido.");
+      }
     }
   };
 
   return (
-    <View style={styles.contMain}>
-      <View style={styles.contIcon}>
-        <TouchableOpacity onPress={() => router.push("/")}>
-          <Icon name="arrow-left" size={30} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.contText}>
-        <Text style={styles.contTitle}>Hi!</Text>
-        <Text style={styles.contSubtitle}>Create a new account</Text>
-      </View>
-      <View style={styles.contInputs}>
-        <TextInput
-          style={styles.contInput}
-          placeholder="User"
-          placeholderTextColor="#9B8CB3"
-          value={user}
-          onChangeText={(text) => {
-            setUser(text);
-            validateField("user", text);
-          }}
-        />
-        {errors.user ? (
-          <Text style={styles.errorText}>{errors.user}</Text>
-        ) : null}
-        <TextInput
-          style={styles.contInput}
-          placeholder="example@gmail.com"
-          keyboardType="email-address"
-          placeholderTextColor="#9B8CB3"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            validateField("email", text);
-          }}
-        />
-        {errors.email ? (
-          <Text style={styles.errorText}>{errors.email}</Text>
-        ) : null}
-        <TextInput
-          style={styles.contInput}
-          placeholder="Password"
-          secureTextEntry
-          placeholderTextColor="#9B8CB3"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            validateField("password", text);
-          }}
-        />
-        {errors.password ? (
-          <Text style={styles.errorText}>{errors.password}</Text>
-        ) : null}
-      </View>
-      <View style={styles.contButton}>
-        <CustomButton onPress={handleSignUp}>SIGN UP</CustomButton>
-      </View>
-      <View style={styles.contLines}>
-        <View style={styles.contLine} />
-        <Text style={styles.contTextline}>or</Text>
-        <View style={styles.contLine} />
-      </View>
-      <View style={styles.mainFooter}>
-        <Text style={styles.contFooterText}> Social Media Signup</Text>
-        <View style={styles.contFooterSvg}>
-          <View style={styles.contIcons}>
-            <GoogleIcon />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={styles.contMain}>
+        <View style={styles.contIcon}>
+          <TouchableOpacity onPress={() => router.push("/")}>
+            <Text>Atras</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contText}>
+          <Text style={styles.contTitle}>Hi!</Text>
+          <Text style={styles.contSubtitle}>Create a new account</Text>
+        </View>
+        <View style={styles.contInputs}>
+          <TextInput
+            style={styles.contInput}
+            placeholder="User"
+            placeholderTextColor="#9B8CB3"
+            value={user}
+            onChangeText={(text) => {
+              setUser(text);
+              validateField("user", text);
+            }}
+          />
+          {errors.user ? (
+            <Text style={styles.errorText}>{errors.user}</Text>
+          ) : null}
+          <TextInput
+            style={styles.contInput}
+            placeholder="example@gmail.com"
+            keyboardType="email-address"
+            placeholderTextColor="#9B8CB3"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              validateField("email", text);
+            }}
+          />
+          {errors.email ? (
+            <Text style={styles.errorText}>{errors.email}</Text>
+          ) : null}
+          <TextInput
+            style={styles.contInput}
+            placeholder="Password"
+            secureTextEntry
+            placeholderTextColor="#9B8CB3"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              validateField("password", text);
+            }}
+          />
+          {errors.password ? (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          ) : null}
+          <TextInput
+            style={styles.contInput}
+            placeholder="Confirm Password"
+            secureTextEntry
+            placeholderTextColor="#9B8CB3"
+            value={confirmPassword}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              validateField("confirmPassword", text);
+            }}
+          />
+          {errors.confirmPassword ? (
+            <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+          ) : null}
+        </View>
+        <View style={styles.contButton}>
+          <CustomButton onPress={handleSignUp}>SIGN UP</CustomButton>
+        </View>
+        <View style={styles.contLines}>
+          <View style={styles.contLine} />
+          <Text style={styles.contTextline}>or</Text>
+          <View style={styles.contLine} />
+        </View>
+        <View style={styles.mainFooter}>
+          <Text style={styles.contFooterText}> Social Media Signup</Text>
+          <View style={styles.contFooterSvg}>
+            <View style={styles.contIcons}>
+              <GoogleIcon />
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.contLogin}>
-        <Text style={styles.contLoginText}>Already have an account?</Text>
-        <TouchableOpacity>
-          <Text
-            style={styles.contLoginTextLogin}
-            onPress={() => router.push("/login")}
-          >
-            Sign in
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <View style={styles.contLogin}>
+          <Text style={styles.contLoginText}>Already have an account?</Text>
+          <TouchableOpacity>
+            <Text
+              style={styles.contLoginTextLogin}
+              onPress={() => router.push("/login")}
+            >
+              Sign in
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Register;
+
 const styles = StyleSheet.create({
   contMain: {
     width: "100%",
@@ -275,7 +323,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     borderRadius: 5,
   },
-
   contFooterText: {
     color: "#ADA1E6",
     fontSize: 20,
@@ -296,6 +343,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 15,
     marginTop: 45,
+    marginBottom: 50,
   },
   contLoginText: {
     color: "#ADA1E6",
