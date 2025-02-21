@@ -1,9 +1,12 @@
 import {
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  Platform,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -11,6 +14,7 @@ import { router } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -58,70 +62,77 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.contMain}>
-      <View style={styles.contIcon}>
-        <TouchableOpacity onPress={() => router.push("/")}>
-          <Text>Atras</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.contText}>
-        <Text style={styles.contTitle}>Welcome!</Text>
-        <Text style={styles.contSubtitle}>Sign in to continue</Text>
-      </View>
-      <View style={styles.contInputs}>
-        <TextInput
-          style={styles.contInput}
-          placeholder="example@gmail.com"
-          keyboardType="email-address"
-          placeholderTextColor="#9B8CB3"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            validateField("email", text);
-          }}
-        />
-        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-        <TextInput
-          style={styles.contInput}
-          placeholder="Password"
-          secureTextEntry
-          placeholderTextColor="#9B8CB3"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            validateField('password', text);
-          }}
-        />
-        {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-      </View>
-      <View style={styles.contButton}>
-        <CustomButton onPress={handleLogin}>LOGIN</CustomButton>
-      </View>
-      <View style={styles.contLines}>
-        <View style={styles.contLine} />
-        <Text style={styles.contTextline}>or</Text>
-        <View style={styles.contLine} />
-      </View>
-      <View style={styles.mainFooter}>
-        <Text style={styles.contFooterText}> Social Media Signup</Text>
-        <View style={styles.contFooterSvg}>
-          <View style={styles.contIcons}>
-            <GoogleIcon />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={styles.contMain}>
+        <View style={styles.contIcon}>
+          <TouchableOpacity onPress={() => router.push("/")}>
+            <AntDesign name="left" size={30} color="#605399" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contText}>
+          <Text style={styles.contTitle}>Welcome!</Text>
+          <Text style={styles.contSubtitle}>Sign in to continue</Text>
+        </View>
+        <View style={styles.contInputs}>
+          <TextInput
+            style={styles.contInput}
+            placeholder="example@gmail.com"
+            keyboardType="email-address"
+            placeholderTextColor="#9B8CB3"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              validateField("email", text);
+            }}
+          />
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+          <TextInput
+            style={styles.contInput}
+            placeholder="Password"
+            secureTextEntry
+            placeholderTextColor="#9B8CB3"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              validateField("password", text);
+            }}
+          />
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          )}
+        </View>
+        <View style={styles.contButton}>
+          <CustomButton onPress={handleLogin}>LOGIN</CustomButton>
+        </View>
+        <View style={styles.contLines}>
+          <View style={styles.contLine} />
+          <Text style={styles.contTextline}>or</Text>
+          <View style={styles.contLine} />
+        </View>
+        <View style={styles.mainFooter}>
+          <Text style={styles.contFooterText}> Social Media Signup</Text>
+          <View style={styles.contFooterSvg}>
+            <View style={styles.contIcons}>
+              <GoogleIcon />
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.contLogin}>
-        <Text style={styles.contLoginText}>Already have an account?</Text>
-        <TouchableOpacity>
-          <Text
-            style={styles.contLoginTextLogin}
-            onPress={() => router.push("/register")}
-          >
-            Sign up
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <View style={styles.contLogin}>
+          <Text style={styles.contLoginText}>Already have an account?</Text>
+          <TouchableOpacity>
+            <Text
+              style={styles.contLoginTextLogin}
+              onPress={() => router.push("/register")}
+            >
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -167,7 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent", // Fondo transparente
   },
   errorText: {
-    color: 'red',
+    color: "red",
     fontSize: 14,
     marginBottom: 10,
   },
@@ -226,6 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 15,
     marginTop: 45,
+    marginBottom: 20,
   },
   contLoginText: {
     color: "#ADA1E6",

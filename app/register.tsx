@@ -16,13 +16,24 @@ import CustomButton from "@/components/CustomButton";
 import Colors from "@/components/Colors";
 import { db } from "../src/config/firebaseConfig"; // Ajusta la ruta si es necesario
 import { addDoc, collection } from "firebase/firestore";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+// Importa el ícono de FontAwesome
 
 const Register = () => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); // Nuevo estado para la confirmación de la contraseña
-  const [errors, setErrors] = useState({ user: "", email: "", password: "", confirmPassword: "" });
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar u ocultar la contraseña
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para confirmar la contraseña
+  const [errors, setErrors] = useState({
+    user: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const validateField = (
     field: "user" | "email" | "password" | "confirmPassword",
@@ -68,7 +79,12 @@ const Register = () => {
 
   const handleSignUp = async () => {
     // Validación de campos vacíos
-    if (!user.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (
+      !user.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       Alert.alert("Error", "All fields are required!");
       return;
     }
@@ -106,13 +122,13 @@ const Register = () => {
         createdAt: new Date(),
       });
       Alert.alert("Éxito", "Usuario registrado correctamente!");
-    
+
       // Limpiar los campos
       setUser("");
       setEmail("");
       setPassword("");
       setConfirmPassword(""); // Limpiar el campo de confirmación
-    
+
       // Redirigir al login
       router.push("/login");
     } catch (error: unknown) {
@@ -134,7 +150,7 @@ const Register = () => {
       <ScrollView style={styles.contMain}>
         <View style={styles.contIcon}>
           <TouchableOpacity onPress={() => router.push("/")}>
-            <Text>Atras</Text>
+            <AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.contText}>
@@ -169,31 +185,56 @@ const Register = () => {
           {errors.email ? (
             <Text style={styles.errorText}>{errors.email}</Text>
           ) : null}
-          <TextInput
-            style={styles.contInput}
-            placeholder="Password"
-            secureTextEntry
-            placeholderTextColor="#9B8CB3"
-            value={password}
-            onChangeText={(text) => {
-              setPassword(text);
-              validateField("password", text);
-            }}
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.contInput}
+              placeholder="Password"
+              secureTextEntry={!showPassword}
+              placeholderTextColor="#9B8CB3"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                validateField("password", text);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <FontAwesome
+                name={showPassword ? "eye-slash" : "eye"}
+                size={20}
+                color="#9B8CB3"
+              />
+            </TouchableOpacity>
+          </View>
           {errors.password ? (
             <Text style={styles.errorText}>{errors.password}</Text>
           ) : null}
-          <TextInput
-            style={styles.contInput}
-            placeholder="Confirm Password"
-            secureTextEntry
-            placeholderTextColor="#9B8CB3"
-            value={confirmPassword}
-            onChangeText={(text) => {
-              setConfirmPassword(text);
-              validateField("confirmPassword", text);
-            }}
-          />
+
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.contInput}
+              placeholder="Confirm Password"
+              secureTextEntry={!showConfirmPassword}
+              placeholderTextColor="#9B8CB3"
+              value={confirmPassword}
+              onChangeText={(text) => {
+                setConfirmPassword(text);
+                validateField("confirmPassword", text);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <FontAwesome
+                name={showConfirmPassword ? "eye-slash" : "eye"}
+                size={20}
+                color="#9B8CB3"
+              />
+            </TouchableOpacity>
+          </View>
           {errors.confirmPassword ? (
             <Text style={styles.errorText}>{errors.confirmPassword}</Text>
           ) : null}
@@ -343,7 +384,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 15,
     marginTop: 45,
-    marginBottom: 50,
+    marginBottom: 20,
   },
   contLoginText: {
     color: "#ADA1E6",
@@ -355,5 +396,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "800",
     marginLeft: 15,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    padding: 10,
   },
 });
