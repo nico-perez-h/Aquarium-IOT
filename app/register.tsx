@@ -15,9 +15,9 @@ import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
 import Colors from "@/components/Colors";
 import { db } from "../src/config/firebaseConfig"; // Ajusta la ruta si es necesario
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, query, where, getDocs, or } from "firebase/firestore";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 // Importa el ícono de FontAwesome
 
@@ -115,6 +115,25 @@ const Register = () => {
     }
 
     try {
+      const userOrEmailQuery = query(
+        collection(db, "users"),
+        or(where("email", "==", email), where("username", "==", user))
+      );
+      
+      const snapshot = await getDocs(userOrEmailQuery);
+      
+      if (!snapshot.empty) {
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.email === email) {
+            Alert.alert("Error", "Email is already registered!");
+          } else if (data.username === user) {
+            Alert.alert("Error", "Username is already taken!");
+          }
+        });
+        return;
+      }
+
       await addDoc(collection(db, "users"), {
         username: user,
         email: email,
@@ -154,7 +173,7 @@ const Register = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.contText}>
-          <Text style={styles.contTitle}>Hi!</Text>
+          <Text style={styles.contTitle}>Hola!</Text>
           <Text style={styles.contSubtitle}>Create a new account</Text>
         </View>
         <View style={styles.contInputs}>

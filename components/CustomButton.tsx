@@ -27,10 +27,10 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {
-    minWidth: "90%",
+    minWidth: "40%",
     padding: 7,
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 30,
     marginVertical: 10,
   },
   buttonText: {
