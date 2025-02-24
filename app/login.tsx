@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
