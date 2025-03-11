@@ -1,89 +1,100 @@
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import CustomButton from "@/components/CustomButton";
-import { router } from "expo-router";
-
-const image = require("@/assets/images/bg.jpg");
+import React from 'react'
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { router } from 'expo-router';
 
 const Index = () => {
-  return (
-    <View style={styles.conMain}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <View style={styles.conttexto}>
-          <Text style={styles.contText}>AQUA</Text>
-          <Text style={styles.contText}>LOGIC</Text>
-        </View>
-        <View style={styles.contButtom}>
-          {/* <CustomButton onPress={() => router.push("/login")}>
-            LOGIN
-          </CustomButton> */}
-          {/* <CustomButton onPress={() => router.push("/register")}>
-            REGISTER
-          </CustomButton> */}
-          <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/login")}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.registerButton} onPress={() => router.push("/register")}>
-            <Text style={styles.registerButtonText}>Register</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-};
+  const handleLogin = () => {
+    router.push("/login"); // Asegúrate de que el archivo `app/login.js` o `app/login.tsx` existe
+  };
 
-export default Index;
+  const handleRegister = () => {
+    router.push("/register"); // Asegúrate de que el archivo `app/register.js` o `app/register.tsx` existe
+  };
+  
+  return (
+    <ImageBackground
+    source={require("../assets/images/betawhite.jpg")}
+    style={styles.imgContainer}
+    resizeMode="cover"
+  >
+    <View style={styles.overlay} />
+    <View style={styles.mainTextContainer}>
+      <Text style={styles.textContainer}>Smart</Text>
+      <Text style={styles.textContainer}>Tank</Text>
+    </View>
+
+    {/* Opciones de Login y Registro */}
+    <View style={styles.optionsContainer}>
+      <Text style={styles.optionText}>¿Ya tienes una cuenta?</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Iniciar sesión</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.optionText}>¿No tienes una cuenta?</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrarse</Text>
+      </TouchableOpacity>
+    </View>
+  </ImageBackground>
+  )
+}
+
+export default Index
 
 const styles = StyleSheet.create({
-  conMain: {
+  imgContainer: {
     flex: 1,
+    width: "100%",
+    height: "100%",
   },
-  conttexto: {
-    flex: 1,
-    justifyContent: "flex-start",
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.4)", // Overlay semitransparente
+  },
+  mainTextContainer: {
+    position: "absolute",
+    top: 80,
+    right: 20,
+    alignItems: "flex-end",
+  },
+  textContainer: {
+    fontSize: 75,
+    fontFamily: "PoppinsSemiBold",
+    color: Colors.secondaryColors.SnowWhite,
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+  },
+  optionsContainer: {
+    position: "absolute",
+    bottom: 100,
+    width: "80%",
+    padding: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Fondo semitransparente
+    borderRadius: 10,
     alignItems: "center",
-    marginTop: 25,
   },
-  
-  image: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  contText: {
-    color: "#f0f0f0",
-    fontSize: 50,
-    fontWeight: "bold",
-    fontFamily:'SpaceMono'
-  },
-  contButtom: {
-    marginBottom: 45,
-  },
-  loginButton: {
-    backgroundColor: '#e65',
-    padding: 10,
-    borderRadius: 20,
+  optionText: {
+    color: Colors.secondaryColors.SnowWhite,
+    fontSize: 18,
     marginBottom: 10,
-    width: 200,
-    alignItems: 'center',
   },
-  registerButton: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#4f4f9d',
-    width: 200,
-    alignItems: 'center',
+  button: {
+    backgroundColor: Colors.primaryColors.Turquoise, // Botón con Turquoise para Login
+    padding: 15,
+    width: "100%",
+    borderRadius: 5,
+    alignItems: "center",
+    marginBottom: 15,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
   },
-  registerButtonText: {
-    color: '#e65',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+})

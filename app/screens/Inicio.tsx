@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { router } from "expo-router"; // Importa el router para la navegación
-import Colors from "@/components/Colors"; // Tu archivo de colores
 
 const Inicio = () => {
   return (
@@ -12,15 +11,24 @@ const Inicio = () => {
       </Text>
 
       {/* Botones de navegación */}
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Dashboard")}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("/screens/Dashboard")}
+      >
         <Text style={styles.buttonText}>Ir al Dashboard</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Notifications")}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("/screens/Notifications")}
+      >
         <Text style={styles.buttonText}>Notificaciones</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/Account")}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("/screens/Account")}
+      >
         <Text style={styles.buttonText}>Cuenta</Text>
       </TouchableOpacity>
     </View>
@@ -38,19 +46,17 @@ const styles = StyleSheet.create({
   },
   contHead: {
     fontSize: 50,
-    color: Colors.title,
     fontWeight: "bold",
     marginBottom: 20, // Separación entre el título y el subtítulo
   },
   contSubitle: {
     fontSize: 20,
-    color: Colors.subTitle,
     fontStyle: "italic",
     fontWeight: "200",
     marginBottom: 40, // Separación entre el subtítulo y los botones
   },
   button: {
-    backgroundColor:"green", // Color de fondo del botón
+    backgroundColor: "green", // Color de fondo del botón
     padding: 12,
     borderRadius: 5,
     marginVertical: 10, // Espaciado entre botones

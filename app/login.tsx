@@ -22,7 +22,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-
+  
   const validateField = (field: "email" | "password", value: string) => {
     let errorMessage = "";
     switch (field) {

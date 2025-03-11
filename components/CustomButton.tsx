@@ -6,19 +6,17 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 interface CustomButtonProps {
   onPress: () => void;
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
-const CustomButton = ({ onPress, children }: CustomButtonProps) => {
+const CustomButton = ({ onPress, children, disabled = false }: CustomButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <LinearGradient
-        colors={["#605399", "#ADA1E6"]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>{children}</Text>
-      </LinearGradient>
+    <TouchableOpacity 
+      onPress={onPress} 
+      disabled={disabled} 
+      style={[styles.button, disabled && styles.disabledButton]}
+    >
+      <Text style={styles.buttonText}>{children}</Text>
     </TouchableOpacity>
   );
 };
@@ -32,6 +30,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 30,
     marginVertical: 10,
+    backgroundColor: "#605399", // Color de fondo del botón
   },
   buttonText: {
     fontSize: 15,
@@ -39,5 +38,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+  },
+  disabledButton: {
+    opacity: 0.5,
   },
 });
