@@ -14,49 +14,25 @@ import { router } from "expo-router";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { auth } from "@/src/config/firebaseConfig"; // Importamos la instancia de autenticación de Firebase
+import { signInWithEmailAndPassword } from "firebase/auth"; // Importamos la función para iniciar sesión
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [errors, setErrors] = useState<{ email: string; password: string }>({
-    email: "",
-    password: "",
-  });
-  
-  const validateField = (field: "email" | "password", value: string) => {
-    let errorMessage = "";
-    switch (field) {
-      case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value.trim()) {
-          errorMessage = "Email is required";
-        } else if (!emailRegex.test(value)) {
-          errorMessage = "Enter a valid email address";
-        }
-        break;
-      case "password":
-        if (!value.trim()) {
-          errorMessage = "Password is required";
-        }
-        break;
-    }
-    setErrors((prev) => ({ ...prev, [field]: errorMessage }));
-  };
+  const [email, setEmail] = useState(""); // Estado para el email
+  const [password, setPassword] = useState(""); // Estado para la contraseña
 
+  // Función para manejar el inicio de sesión
   const handleLogin = async () => {
-    // Validación de campos vacíos
-    if (!email.trim() || !password.trim()) {
-      Alert.alert("Error", "All fields are required!");
+    if (!email || !password) {
+      Alert.alert("Error", "Por favor, ingrese su correo y contraseña.");
       return;
     }
-
     try {
-      /* await signInWithEmailAndPassword(auth, email, password); */
-      Alert.alert("Success", "Logged in successfully!");
-      router.push("/screens/Inicio"); // Redirigir a la pantalla de inicio
+      await signInWithEmailAndPassword(auth, email, password);
+      Alert.alert("Éxito", "Inicio de sesión exitoso");
+      router.push("/screens/Inicio"); // Redirige al usuario a la pantalla principal
     } catch (error) {
-      Alert.alert("Error", "Could not log in. Please check your credentials.");
-      console.error("Login error: ", error); // Muestra el error en consola para depurar
+      Alert.alert("Error", "Credenciales incorrectas o problema de red.");
     }
   };
 
@@ -67,7 +43,7 @@ const Login = () => {
     >
       <ScrollView style={styles.contMain}>
         <View style={styles.contIcon}>
-          <TouchableOpacity onPress={() => router.push("/")}>
+          <TouchableOpacity onPress={() => router.push("/")}> 
             <AntDesign name="left" size={30} color="#605399" />
           </TouchableOpacity>
         </View>
@@ -82,26 +58,16 @@ const Login = () => {
             keyboardType="email-address"
             placeholderTextColor="#9B8CB3"
             value={email}
-            onChangeText={(text) => {
-              setEmail(text);
-              validateField("email", text);
-            }}
+            onChangeText={setEmail} // Guardamos el email ingresado
           />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
           <TextInput
             style={styles.contInput}
             placeholder="Password"
             secureTextEntry
             placeholderTextColor="#9B8CB3"
             value={password}
-            onChangeText={(text) => {
-              setPassword(text);
-              validateField("password", text);
-            }}
+            onChangeText={setPassword} // Guardamos la contraseña ingresada
           />
-          {errors.password && (
-            <Text style={styles.errorText}>{errors.password}</Text>
-          )}
         </View>
         <View style={styles.contButton}>
           <CustomButton onPress={handleLogin}>LOGIN</CustomButton>
@@ -142,6 +108,19 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  contFooterSvg: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contIcons: {
+    marginHorizontal: 10,
+  },
+  contFooterText: {
+    color: "#ADA1E6",
+    fontSize: 16,
+    marginVertical: 10,
+  },
   contIcon: {
     marginLeft: 10,
     marginTop: 10,
@@ -169,17 +148,12 @@ const styles = StyleSheet.create({
   },
   contInput: {
     height: 50,
-    borderBottomColor: "#a6a6a6", // Color de la línea inferior
-    borderBottomWidth: 1.5, // Grosor de la línea inferior
+    borderBottomColor: "#a6a6a6",
+    borderBottomWidth: 1.5,
     marginBottom: 20,
-    paddingHorizontal: 15, // Sin padding lateral
+    paddingHorizontal: 15,
     fontSize: 20,
-    backgroundColor: "transparent", // Fondo transparente
-  },
-  errorText: {
-    color: "red",
-    fontSize: 14,
-    marginBottom: 10,
+    backgroundColor: "transparent",
   },
   contButton: {
     alignItems: "center",
@@ -193,60 +167,38 @@ const styles = StyleSheet.create({
   contLines: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 15,
-    marginHorizontal: 50,
+    justifyContent: "center",
+    marginVertical: 20,
   },
   contLine: {
+    height: 1,
     flex: 1,
-    height: 1, // Altura de la línea
-    backgroundColor: "#023047",
+    backgroundColor: "#ADA1E6",
   },
   contTextline: {
-    color: "#605399",
-    marginHorizontal: 10, // Espacio a los lados del texto
-    fontSize: 17,
+    marginHorizontal: 10,
+    color: "#ADA1E6",
+    fontSize: 16,
+  },
+  contLogin: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  contLoginText: {
+    color: "#ADA1E6",
+    fontSize: 16,
+    marginRight: 5,
+  },
+  contLoginTextLogin: {
+    color: "green",
+    fontSize: 16,
     fontWeight: "bold",
   },
   mainFooter: {
     alignItems: "center",
-    alignSelf: "center",
-    width: "90%",
-    paddingVertical: 10, // Espaciado vertical para el contenido del footer
-    marginTop: 25,
-    borderRadius: 5,
-  },
-
-  contFooterText: {
-    color: "#ADA1E6",
-    fontSize: 20,
-    fontWeight: "400",
-  },
-  contFooterSvg: {
-    flexDirection: "row", // Para alinear los íconos en fila
-    justifyContent: "center", // Para centrar los íconos
-    alignItems: "center", // Para alinear los íconos verticalmente
-    marginTop: 15, // Espacio superior
-  },
-  contIcons: {
-    flexDirection: "row", // Alinea los íconos en fila
-    justifyContent: "space-around", // Espaciado entre los íconos
-    width: "70%", // Ajusta el ancho según sea necesario
-  },
-  contLogin: {
-    flexDirection: "row",
-    marginLeft: 15,
-    marginTop: 45,
-    marginBottom: 20,
-  },
-  contLoginText: {
-    color: "#ADA1E6",
-    fontSize: 15,
-    fontWeight: "400",
-  },
-  contLoginTextLogin: {
-    color: "#605399",
-    fontSize: 15,
-    fontWeight: "800",
-    marginLeft: 15,
+    justifyContent: "center",
+    marginVertical: 20,
   },
 });

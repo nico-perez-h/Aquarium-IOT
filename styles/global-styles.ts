@@ -5,7 +5,7 @@ export const globalStyles = StyleSheet.create({
 
   mainContainer:{
     flex: 1,
-    backgroundColor: ,
+    /* backgroundColor: , */
     alignItems: 'center',
     justifyContent: 'center',
   }

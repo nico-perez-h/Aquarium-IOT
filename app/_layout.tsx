@@ -28,6 +28,7 @@ export default RootLayout;
 
 const styles = StyleSheet.create({
   mainContainer:{
+    marginTop: 40,
     flex: 1,
   }
 });
