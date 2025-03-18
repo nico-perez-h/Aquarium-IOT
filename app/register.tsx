@@ -8,16 +8,62 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Animated,
+  Vibration,
 } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/src/config/firebaseConfig";
 import { FirebaseError } from "firebase/app";
+
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+const AnimatedButton: React.FC<{
+  onPress: () => void;
+  children: React.ReactNode;
+}> = ({ onPress, children }) => {
+  const [scaleValue] = useState(new Animated.Value(1));
+
+  const onPressIn = () => {
+    // Activar la vibración cuando el botón es presionado
+    Vibration.vibrate(30); // La vibración dura 30 ms
+
+    // Animación para simular que el botón se hunde
+    Animated.spring(scaleValue, {
+      toValue: 0.92, // Reducción para dar el efecto de presión
+      friction: 4, // Menor fricción para un "apretón" más suave
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const onPressOut = () => {
+    // Animación para recuperar el botón al tamaño original
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      friction: 4,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+      <TouchableOpacity
+        onPressIn={onPressIn} // Inicia la animación y vibración al presionar
+        onPressOut={onPressOut} // Termina la animación al soltar
+        onPress={onPress}
+        style={styles.contButtonsTouchable}
+      >
+        {children}
+      </TouchableOpacity>
+    </Animated.View>
+  );
+};
 
 //Funcion para validar el correo electronico
 const validateEmail = (email: string) => {
@@ -127,107 +173,59 @@ const Register = () => {
       style={{ flex: 1 }}
     >
       <ScrollView style={styles.contMain}>
-        <View style={styles.contIcon}>
-          <TouchableOpacity onPress={() => router.push("/")}>
+        <View style={styles.contMainIcon}>
+          <TouchableOpacity onPress={() => router.push("/")} style={styles.contMainIcons}>
             <AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={styles.contText}>
-          <Text style={styles.contTitle}>Hola!</Text>
-          <Text style={styles.contSubtitle}>Crea una cuenta nueva</Text>
+        <View style={styles.contHeader}>
+          <Text style={styles.contTitulo}>Crea tu cuenta!</Text>
         </View>
-        <View style={styles.contInputs}>
-          <TextInput
-            style={styles.contInput}
-            placeholder="Correo electrónico"
-            keyboardType="email-address"
-            placeholderTextColor="#9B8CB3"
-            value={email}
-            onChangeText={setEmail}
-            editable={!loading} // Deshabilitar el campo si se está cargando
-          />
-          <View style={styles.passwordContainer}>
+        <View style={styles.contMainInputs}>
+          <View style={styles.contInputs}>
+            <MaterialCommunityIcons
+              name="email-outline"
+              size={24}
+              color="gray"
+            />
+            <TextInput
+              style={styles.contInput}
+              placeholder="Correo electrónico"
+              keyboardType="email-address"
+              placeholderTextColor="black"
+              value={email}
+              onChangeText={setEmail}
+              editable={!loading} // Deshabilitar el campo si se está cargando
+            />
+          </View>
+          <View style={styles.contInputs}>
+            <MaterialIcons name="lock-outline" size={24} color="gray" />
             <TextInput
               style={styles.contInput}
               placeholder="Contraseña"
-              placeholderTextColor="#9B8CB3"
+              placeholderTextColor="black"
               secureTextEntry={!showPassword}
               value={password}
               onChangeText={handlePasswordChange}
             />
             <TouchableOpacity
-              style={styles.eyeIcon}
+              style={styles.contIconOjo}
               onPress={() => setShowPassword(!showPassword)}
             >
               <FontAwesome
                 name={showPassword ? "eye" : "eye-slash"}
                 size={20}
-                color="#9B8CB3"
+                color="gray"
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.specialCharactersText}>
-            Puedes usar caracteres especiales como:
-          </Text>
-          <Text style={styles.specialCharactersText}>
-            ! @ # $ % ^ & * ( ) _ + .
-          </Text>
+        </View>
 
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.contInput}
-              placeholder="Confirmar contraseña"
-              placeholderTextColor="#9B8CB3"
-              secureTextEntry={!showPassword2}
-              value={confirmPass}
-              onChangeText={handleConfirmPasswordChange}
-            />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowPassword2(!showPassword2)}
-            >
-              <FontAwesome
-                name={showPassword2 ? "eye" : "eye-slash"}
-                size={20}
-                color="#9B8CB3"
-              />
-            </TouchableOpacity>
-          </View>
-          {/* Mostrar mensaje si las contraseñas no coinciden */}
-          <Text style={{ color: passwordsMatch ? "green" : "red" }}>
-            {passwordsMatch
-              ? "Las contraseñas coinciden"
-              : "Las contraseñas no coinciden"}
-          </Text>
-        </View>
-        <View style={styles.contButton}>
-          <CustomButton onPress={handleRegister} disabled={loading}>
-            {loading ? "Registrando..." : "REGISTRARSE"}
-          </CustomButton>
-        </View>
-        <View style={styles.contLines}>
-          <View style={styles.contLine} />
-          <Text style={styles.contTextline}>or</Text>
-          <View style={styles.contLine} />
-        </View>
-        <View style={styles.mainFooter}>
-          <Text style={styles.contFooterText}> Social Media Signup</Text>
-          <View style={styles.contFooterSvg}>
-            <View style={styles.contIcons}>
-              <GoogleIcon />
-            </View>
-          </View>
-        </View>
-        <View style={styles.contLogin}>
-          <Text style={styles.contLoginText}>Already have an account?</Text>
-          <TouchableOpacity>
-            <Text
-              style={styles.contLoginTextLogin}
-              onPress={() => router.push("/login")}
-            >
-              Sign in
-            </Text>
-          </TouchableOpacity>
+        {/* Botón de continuar con correo */}
+        <View style={styles.contButtonLogin}>
+          <AnimatedButton onPress={handleRegister}>
+            <Text style={styles.contButtonsTexto}>Registratre</Text>
+          </AnimatedButton>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -237,141 +235,17 @@ const Register = () => {
 export default Register;
 
 const styles = StyleSheet.create({
-  contMain: {
-    width: "100%",
-    height: "100%",
-  },
-  contIcon: {
-    marginLeft: 10,
-    marginTop: 10,
-  },
-  contText: {
-    marginLeft: 30,
-    marginTop: 15,
-  },
-  contTitle: {
-    fontSize: 60,
-    fontWeight: "bold",
-  },
-  contSubtitle: {
-    fontSize: 30,
-    marginTop: 15,
-    marginLeft: 0.5,
-    fontWeight: "300",
-  },
-  contInputs: {
-    marginTop: 30,
-    marginLeft: 30,
-    marginRight: 50,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  contInput: {
-    height: 50,
-    minWidth: "100%", // Ancho del 90% del contenedor
-    borderBottomColor: "#a6a6a6", // Color de la línea inferior
-    borderBottomWidth: 1.5, // Grosor de la línea inferior
-    marginBottom: 20,
-    paddingHorizontal: 15, // Sin padding lateral
-    fontSize: 20,
-    backgroundColor: "transparent", // Fondo transparente
-  },
-  specialCharactersText: {
-    color: "#7E7E7E",
-    fontSize: 14,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  contButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 20,
-    marginTop: 15,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-  },
-  button: {
-    width: "90%",
-    padding: 7,
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  contButtonText: {
-    fontSize: 15,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
-  contLines: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 15,
-    marginHorizontal: 50,
-  },
-  contLine: {
-    flex: 1,
-    height: 1, // Altura de la línea
-    backgroundColor: "#023047",
-  },
-  contTextline: {
-    color: "#605399",
-    marginHorizontal: 10, // Espacio a los lados del texto
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-  mainFooter: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "90%",
-    paddingVertical: 10, // Espaciado vertical para el contenido del footer
-    marginTop: 25,
-    borderRadius: 5,
-  },
-  contFooterText: {
-    color: "#ADA1E6",
-    fontSize: 20,
-    fontWeight: "400",
-  },
-  contFooterSvg: {
-    flexDirection: "row", // Para alinear los íconos en fila
-    justifyContent: "center", // Para centrar los íconos
-    alignItems: "center", // Para alinear los íconos verticalmente
-    marginTop: 15, // Espacio superior
-  },
-  contIcons: {
-    flexDirection: "row", // Alinea los íconos en fila
-    justifyContent: "space-around", // Espaciado entre los íconos
-    width: "70%", // Ajusta el ancho según sea necesario
-  },
-  contLogin: {
-    flexDirection: "row",
-    marginLeft: 15,
-    marginTop: 45,
-    marginBottom: 20,
-  },
-  contLoginText: {
-    color: "#ADA1E6",
-    fontSize: 15,
-    fontWeight: "400",
-  },
-  contLoginTextLogin: {
-    color: "#605399",
-    fontSize: 15,
-    fontWeight: "800",
-    marginLeft: 15,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  eyeIcon: {
-    position: "absolute",
-    right: 10,
-    padding: 10,
-  },
+  contMain: {},
+  contMainIcon:{},
+  contMainIcons:{},
+  contHeader:{},
+  contTitulo:{},
+  contMainInputs:{},
+  contInputs:{},
+  contInput:{},
+  contIconOjo:{},
+  contButtonLogin:{},
+  contButtonsTexto:{},
+  contButtonsTouchable:{},
+
 });

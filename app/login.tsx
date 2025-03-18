@@ -9,29 +9,37 @@ import {
   Platform,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { router } from "expo-router";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import CustomButton from "@/components/CustomButton";
+import { auth } from "@/src/config/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { auth } from "@/src/config/firebaseConfig"; // Importamos la instancia de autenticación de Firebase
-import { signInWithEmailAndPassword } from "firebase/auth"; // Importamos la función para iniciar sesión
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Login = () => {
-  const [email, setEmail] = useState(""); // Estado para el email
-  const [password, setPassword] = useState(""); // Estado para la contraseña
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // Función para manejar el inicio de sesión
+  // Inicio de sesión con email y contraseña
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Por favor, ingrese su correo y contraseña.");
       return;
     }
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Éxito", "Inicio de sesión exitoso");
-      router.push("/screens/Inicio"); // Redirige al usuario a la pantalla principal
-    } catch (error) {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      Alert.alert("Éxito", `Bienvenido, ${userCredential.user.email}`);
+      console.log("Usuario autenticado:", userCredential.user);
+      router.push("/screens/Inicio");
+    } catch (error: any) {
+      console.error("Error al iniciar sesión:", error.message);
       Alert.alert("Error", "Credenciales incorrectas o problema de red.");
     }
   };
@@ -42,31 +50,37 @@ const Login = () => {
       style={{ flex: 1 }}
     >
       <ScrollView style={styles.contMain}>
-        <View style={styles.contIcon}>
-          <TouchableOpacity onPress={() => router.push("/")}> 
+        {/* <View style={styles.contIcon}>
+          <TouchableOpacity onPress={() => router.push("/")}>
             <AntDesign name="left" size={30} color="#605399" />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.contText}>
-          <Text style={styles.contTitle}>Welcome!</Text>
-          <Text style={styles.contSubtitle}>Sign in to continue</Text>
+          <Text style={styles.contTitle}>Login</Text>
         </View>
         <View style={styles.contInputs}>
+          <MaterialCommunityIcons
+            name="email-outline"
+            size={24}
+            color="gray"
+          />
           <TextInput
             style={styles.contInput}
             placeholder="example@gmail.com"
             keyboardType="email-address"
             placeholderTextColor="#9B8CB3"
             value={email}
-            onChangeText={setEmail} // Guardamos el email ingresado
+            onChangeText={setEmail}
           />
+        </View>
+        <View style={styles.contInputs}>
           <TextInput
             style={styles.contInput}
             placeholder="Password"
             secureTextEntry
             placeholderTextColor="#9B8CB3"
             value={password}
-            onChangeText={setPassword} // Guardamos la contraseña ingresada
+            onChangeText={setPassword}
           />
         </View>
         <View style={styles.contButton}>
@@ -80,9 +94,9 @@ const Login = () => {
         <View style={styles.mainFooter}>
           <Text style={styles.contFooterText}> Social Media Signup</Text>
           <View style={styles.contFooterSvg}>
-            <View style={styles.contIcons}>
+            <TouchableOpacity style={styles.contIcons}>
               <GoogleIcon />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.contLogin}>

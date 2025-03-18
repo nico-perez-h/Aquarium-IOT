@@ -1,28 +1,7 @@
-#9fe7f5
-#429ebd
-#053f5c
-#f7ad19
 
 
-Paleta 2
-#761b25  
-#71e4f7
-#09a8c5
-#fbe615
-#8b2520
-
-Paleta 3 
-#2d9e8a
-#d7c19c
-#dca21d
-#f2cda7
-#998845
-#2d1f18
-
-Paleta 4
-#f6fe81
-#009b77 verde esemeralda
-#ffd700 amarillo dorado
-#4f4f9d violeta azulado
-
-#800020
+#16354D
+#6B99C3
+#D2D2D4
+#E4E5EA
+#0C151C

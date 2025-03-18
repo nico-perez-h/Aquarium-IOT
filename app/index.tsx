@@ -1,100 +1,230 @@
-import React from 'react'
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { router } from 'expo-router';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Animated,
+  Vibration,
+} from "react-native";
+import React, { useState } from "react";
+import { router } from "expo-router";
+
+import FacebookIcon from "@/assets/svg/FacebookIcon";
+import GoogleIcon from "@/assets/svg/GoogleIcon";
+import AppleIcon from "@/assets/svg/AppleIcon";
+import { Colors } from "@/constants/Colors"; // Importamos los colores
+
+const AnimatedButton: React.FC<{
+  onPress: () => void;
+  children: React.ReactNode;
+}> = ({ onPress, children }) => {
+  const [scaleValue] = useState(new Animated.Value(1));
+
+  const onPressIn = () => {
+    // Activar la vibración cuando el botón es presionado
+    Vibration.vibrate(30); // La vibración dura 30 ms
+
+    // Animación para simular que el botón se hunde
+    Animated.spring(scaleValue, {
+      toValue: 0.92, // Reducción para dar el efecto de presión
+      friction: 4, // Menor fricción para un "apretón" más suave
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const onPressOut = () => {
+    // Animación para recuperar el botón al tamaño original
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      friction: 4,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+      <TouchableOpacity
+        onPressIn={onPressIn} // Inicia la animación y vibración al presionar
+        onPressOut={onPressOut} // Termina la animación al soltar
+        onPress={onPress}
+        style={styles.contButtonsTouchable}
+      >
+        {children}
+      </TouchableOpacity>
+    </Animated.View>
+  );
+};
 
 const Index = () => {
   const handleLogin = () => {
-    router.push("/login"); // Asegúrate de que el archivo `app/login.js` o `app/login.tsx` existe
+    console.log("Touchable de incio de sesion");
+    router.push("/login");
   };
 
   const handleRegister = () => {
-    router.push("/register"); // Asegúrate de que el archivo `app/register.js` o `app/register.tsx` existe
+    console.log("Touchable de registro");
+    router.push("/register");
   };
-  
+
+  const handlePressFacebook = () => {
+    console.log("Touchable pressed Facebook");
+  };
+
+  const handlePressGoogle = () => {
+    console.log("Touchable pressed Google");
+  };
+
+  const handlePressApple = () => {
+    console.log("Touchable pressed Apple");
+  };
+
   return (
-    <ImageBackground
-    source={require("../assets/images/betawhite.jpg")}
-    style={styles.imgContainer}
-    resizeMode="cover"
-  >
-    <View style={styles.overlay} />
-    <View style={styles.mainTextContainer}>
-      <Text style={styles.textContainer}>Smart</Text>
-      <Text style={styles.textContainer}>Tank</Text>
+    <View style={styles.contPrincipal}>
+      <View style={styles.contText}>
+        <Text style={styles.contTexts}>Entra ahora</Text>
+      </View>
+
+      <View style={styles.contButtons}>
+        <AnimatedButton onPress={handlePressFacebook}>
+          <FacebookIcon style={styles.contButtonsImage} />
+          <Text style={styles.contButtonsTexto}>Continuar con Facebook</Text>
+        </AnimatedButton>
+        <AnimatedButton onPress={handlePressGoogle}>
+          <GoogleIcon style={styles.contButtonsImage} />
+          <Text style={styles.contButtonsTexto}>Continuar con Google</Text>
+        </AnimatedButton>
+        <AnimatedButton onPress={handlePressApple}>
+          <AppleIcon style={styles.contButtonsImage} />
+          <Text style={styles.contButtonsTexto}>Continuar con Apple</Text>
+        </AnimatedButton>
+      </View>
+
+      {/* Linea que divide  */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
+        <View>
+          <Text style={{ width: 50, textAlign: "center", color:"gray" }}>o</Text>
+        </View>
+        <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
+      </View>
+
+
+      {/* Botón de continuar con correo */}
+      <View style={styles.contButtonLogin}>
+        <AnimatedButton onPress={handleLogin}>
+          <Text style={styles.contButtonsTexto}>Continuar con correo</Text>
+        </AnimatedButton>
+      </View>
+
+      {/* Redirigir a Registrarse */}
+      <View style={styles.contRegistro}>
+        <Text style={styles.contRegistroTexto}>No tengo una cuenta</Text>
+        <TouchableOpacity
+          onPress={handleRegister}
+          style={styles.contRegistroLink}
+        >
+          <Text style={styles.contRegistroLinkTexto}>Registrarme</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-
-    {/* Opciones de Login y Registro */}
-    <View style={styles.optionsContainer}>
-      <Text style={styles.optionText}>¿Ya tienes una cuenta?</Text>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.optionText}>¿No tienes una cuenta?</Text>
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrarse</Text>
-      </TouchableOpacity>
-    </View>
-  </ImageBackground>
-  )
-}
-
-export default Index
+  );
+};
 
 const styles = StyleSheet.create({
-  imgContainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
+  contPrincipal: {
+    flex: 1, // Hace que el fondo cubra el 100% de la pantalla
+    justifyContent: "center",
+    backgroundColor: Colors.Blanco_Perla, // Fondo claro
   },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Overlay semitransparente
+
+  contText: {
+    alignItems: "center",
+    marginBottom: 30,
   },
-  mainTextContainer: {
-    position: "absolute",
-    top: 80,
-    right: 20,
-    alignItems: "flex-end",
+
+  contTexts: {
+    fontSize: 60,
+    fontFamily: "PoppinsExtraLight",
+    color: Colors.Azul_Profundo, // Color de texto de título
   },
-  textContainer: {
-    fontSize: 75,
-    fontFamily: "PoppinsSemiBold",
-    color: Colors.secondaryColors.SnowWhite,
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
+
+  contButtons: {
+    marginBottom: 40,
   },
-  optionsContainer: {
-    position: "absolute",
-    bottom: 100,
-    width: "80%",
-    padding: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Fondo semitransparente
+
+  contButtonsTouchable: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.Azul_Celeste, // Fondo de los botones
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 10,
-    alignItems: "center",
+    marginVertical: 10, // Separación entre botones
+    marginHorizontal: 15, // Margen horizontal
+    justifyContent: "center", // Centra el contenido dentro del botón
   },
-  optionText: {
-    color: Colors.secondaryColors.SnowWhite,
+
+  contButtonsImage: {
+    width: 32,
+    height: 32,
+    marginRight: 10,
+  },
+
+  contButtonsTexto: {
     fontSize: 18,
-    marginBottom: 10,
+    color: Colors.Blanco_Perla, // Texto blanco en botones
+    fontFamily: "PoppinsSemiBold", // Usamos la fuente de semi negrita
   },
-  button: {
-    backgroundColor: Colors.primaryColors.Turquoise, // Botón con Turquoise para Login
-    padding: 15,
-    width: "100%",
-    borderRadius: 5,
+
+  // Estilo para la línea divisoria
+  dividerContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    justifyContent: "center",
+    marginVertical: 20,
   },
-  buttonText: {
+
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.Azul_Profundo, // Color de la línea divisoria
+  },
+
+  dividerText: {
+    width: 50,
+    textAlign: "center",
     fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
+    color: Colors.Azul_Profundo, // Color del texto "o"
+    fontFamily: "PoppinsMedium", // Fuente de tamaño medio
   },
-})
+
+  contButtonLogin: {
+    marginTop: 20,
+  },
+
+  contRegistro: {
+    flexDirection: "row", // Los elementos estarán en una sola línea
+    justifyContent: "center", // Centra todo el contenido en la línea
+    marginTop: 20,
+    alignItems: "center",
+    alignContent: "center",
+  },
+
+  contRegistroTexto: {
+    fontSize: 16,
+    color: Colors.Azul_Profundo, // Color de texto "No tengo cuenta"
+    fontFamily: "PoppinsRegular", // Aseguramos que sea regular
+  },
+
+  contRegistroLink: {
+    marginLeft: 7,
+  },
+
+  contRegistroLinkTexto: {
+    fontSize: 18,
+    color: Colors.Azul_Celeste, // Color de enlace para "Registrarme"
+    fontFamily: "PoppinsRegular", // Enlace en negrita
+  },
+});
+
+export default Index;

@@ -3,8 +3,8 @@ import Svg, { Defs, LinearGradient, Stop, Path, SvgProps } from "react-native-sv
 const FacebookIcon = (props: SvgProps) => (
   <Svg
     fill="url(#a)"
-    height={48}
-    width={48}
+    height={20}
+    width={20}
     viewBox="0 0 36 36"
     {...props}
   >

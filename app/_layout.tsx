@@ -1,13 +1,15 @@
 import { StyleSheet, View } from "react-native";
 import { Slot } from "expo-router";
 import { useFonts } from "expo-font";
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from "expo-status-bar";
 
 const RootLayout = () => {
   const [loaded] = useFonts({
-    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
+    PoppinsExtraLight: require("../assets/fonts/Poppins-ExtraLight.ttf"),
     PoppinsMedium: require("../assets/fonts/Poppins-Medium.ttf"),
     PoppinsSemiBold: require("../assets/fonts/Poppins-SemiBold.ttf"),
+    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
+    Canada: require("../assets/fonts/Canada.otf"),
   });
 
   if (!loaded) {
@@ -18,8 +20,7 @@ const RootLayout = () => {
     <View style={styles.mainContainer}>
       <Slot />
 
-
-      <StatusBar style="light"/>
+      <StatusBar style="dark" />
     </View>
   );
 };
@@ -27,8 +28,8 @@ const RootLayout = () => {
 export default RootLayout;
 
 const styles = StyleSheet.create({
-  mainContainer:{
-    marginTop: 40,
+  mainContainer: {
+    marginTop: 30,
     flex: 1,
-  }
+  },
 });

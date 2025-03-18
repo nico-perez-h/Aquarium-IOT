@@ -1,12 +1,7 @@
 export const Colors = {
-  primaryColors: {
-    DeepBlue: "#003366", // Representa el océano y la tecnología
-    Turquoise: "#00A8A8", // Refleja agua limpia y modernidad
-    EmeraldGreen: "#2ECC71", // Representa la vida acuática y la vegetación
-  },
-  secondaryColors: {
-    DarkGray: "#2C3E50", // Tono tecnológico y elegante
-    SnowWhite: "#ECF0F1", // Para contrastes y textos legibles
-    SandBeige: "#D4B483", // Evoca el sustrato natural del acuario
-  },
+  Azul_Profundo: "#16354D",
+  Azul_Celeste: "#6B99C3",
+  Gris_Niebla: "#D2D2D4",
+  Blanco_Perla: "#E4E5EA",
+  Negro_Media_Noche: "#0C151C",
 } as const;

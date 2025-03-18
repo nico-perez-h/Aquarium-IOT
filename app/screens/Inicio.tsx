@@ -1,15 +1,32 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
+import { useEffect, useState} from "react"; // Importa los hooks de estado y efecto
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+
 import { router } from "expo-router"; // Importa el router para la navegación
 
+import { auth } from "@/src/config/firebaseConfig"; // Importa la instancia de autenticación de Firebase
+import { onAuthStateChanged, User} from "firebase/auth"; 
+
+
 const Inicio = () => {
+  const [user, setUser] = useState<User | null>(null); // Estado para el usuario autenticado
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+
   return (
     <View style={styles.contMain}>
       <Text style={styles.contHead}>AquaLogic</Text>
       <Text style={styles.contSubitle}>
         Lógica precisa para un ambiente perfecto
       </Text>
-
+      {user ? <Text>Usuario autenticado: {user.email}</Text> : <Text>No hay usuario autenticado</Text>}
       {/* Botones de navegación */}
       <TouchableOpacity
         style={styles.button}
