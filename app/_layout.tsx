@@ -24,7 +24,6 @@ const RootLayout = () => {
     </View>
   );
 };
-
 export default RootLayout;
 
 const styles = StyleSheet.create({
