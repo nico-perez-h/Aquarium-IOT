@@ -12,7 +12,7 @@ import { router } from "expo-router";
 import FacebookIcon from "@/assets/svg/FacebookIcon";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import AppleIcon from "@/assets/svg/AppleIcon";
-import { Colors } from "@/constants/Colors"; // Importamos los colores
+import { Colors } from "@/src/constants/Colors"; // Importamos los colores
 
 const AnimatedButton: React.FC<{
   onPress: () => void;
