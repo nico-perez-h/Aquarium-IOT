@@ -14,77 +14,14 @@ import GoogleIcon from "@/assets/svg/GoogleIcon";
 import AppleIcon from "@/assets/svg/AppleIcon";
 import { Colors } from "@/src/constants/Colors"; // Importamos los colores
 
-const AnimatedButton: React.FC<{
-  onPress: () => void;
-  children: React.ReactNode;
-}> = ({ onPress, children }) => {
-  const [scaleValue] = useState(new Animated.Value(1));
-
-  const onPressIn = () => {
-    // Activar la vibración cuando el botón es presionado
-    Vibration.vibrate(30); // La vibración dura 30 ms
-
-    // Animación para simular que el botón se hunde
-    Animated.spring(scaleValue, {
-      toValue: 0.92, // Reducción para dar el efecto de presión
-      friction: 4, // Menor fricción para un "apretón" más suave
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const onPressOut = () => {
-    // Animación para recuperar el botón al tamaño original
-    Animated.spring(scaleValue, {
-      toValue: 1,
-      friction: 4,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  return (
-    <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-      <TouchableOpacity
-        onPressIn={onPressIn} // Inicia la animación y vibración al presionar
-        onPressOut={onPressOut} // Termina la animación al soltar
-        onPress={onPress}
-        style={styles.contButtonsTouchable}
-      >
-        {children}
-      </TouchableOpacity>
-    </Animated.View>
-  );
-};
-
 const Index = () => {
-  const handleLogin = () => {
-    console.log("Touchable de incio de sesion");
-    router.push("/login");
-  };
-
-  const handleRegister = () => {
-    console.log("Touchable de registro");
-    router.push("/register");
-  };
-
-  const handlePressFacebook = () => {
-    console.log("Touchable pressed Facebook");
-  };
-
-  const handlePressGoogle = () => {
-    console.log("Touchable pressed Google");
-  };
-
-  const handlePressApple = () => {
-    console.log("Touchable pressed Apple");
-  };
-
   return (
     <View style={styles.contPrincipal}>
       <View style={styles.contText}>
         <Text style={styles.contTexts}>Entra ahora</Text>
       </View>
 
-      <View style={styles.contButtons}>
+      {/* <View style={styles.contButtons}>
         <AnimatedButton onPress={handlePressFacebook}>
           <FacebookIcon style={styles.contButtonsImage} />
           <Text style={styles.contButtonsTexto}>Continuar con Facebook</Text>
@@ -97,26 +34,26 @@ const Index = () => {
           <AppleIcon style={styles.contButtonsImage} />
           <Text style={styles.contButtonsTexto}>Continuar con Apple</Text>
         </AnimatedButton>
-      </View>
+      </View> */}
 
       {/* Linea que divide  */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
         <View>
-          <Text style={{ width: 50, textAlign: "center", color:"gray" }}>o</Text>
+          <Text style={{ width: 50, textAlign: "center", color: "gray" }}>o</Text>
         </View>
         <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
       </View>
 
 
-      {/* Botón de continuar con correo */}
+      {/* Botón de continuar con correo 
       <View style={styles.contButtonLogin}>
         <AnimatedButton onPress={handleLogin}>
-          <Text style={styles.contButtonsTexto}>Continuar con correo</Text>
+          <Text style={styles.contButtonsTexto}>Continuar con correo</Text><
         </AnimatedButton>
       </View>
 
-      {/* Redirigir a Registrarse */}
+      Redirigir a Registrarse 
       <View style={styles.contRegistro}>
         <Text style={styles.contRegistroTexto}>No tengo una cuenta</Text>
         <TouchableOpacity
@@ -126,6 +63,7 @@ const Index = () => {
           <Text style={styles.contRegistroLinkTexto}>Registrarme</Text>
         </TouchableOpacity>
       </View>
+      */}
     </View>
   );
 };
