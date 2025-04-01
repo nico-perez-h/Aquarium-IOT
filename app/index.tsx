@@ -12,7 +12,7 @@ import { router } from "expo-router";
 import FacebookIcon from "@/assets/svg/FacebookIcon";
 import GoogleIcon from "@/assets/svg/GoogleIcon";
 import AppleIcon from "@/assets/svg/AppleIcon";
-import { Colors } from "@/src/constants/Colors"; // Importamos los colores
+15|import { Colors } from "@/src/constants/Colors"; // Importamos los colores
 
 const AnimatedButton: React.FC<{
   onPress: () => void;
@@ -56,35 +56,13 @@ const AnimatedButton: React.FC<{
 };
 
 const Index = () => {
-  const handleLogin = () => {
-    console.log("Touchable de incio de sesion");
-    router.push("/login");
-  };
-
-  const handleRegister = () => {
-    console.log("Touchable de registro");
-    router.push("/register");
-  };
-
-  const handlePressFacebook = () => {
-    console.log("Touchable pressed Facebook");
-  };
-
-  const handlePressGoogle = () => {
-    console.log("Touchable pressed Google");
-  };
-
-  const handlePressApple = () => {
-    console.log("Touchable pressed Apple");
-  };
-
   return (
     <View style={styles.contPrincipal}>
       <View style={styles.contText}>
         <Text style={styles.contTexts}>Entra ahora</Text>
       </View>
 
-      <View style={styles.contButtons}>
+      {/* <View style={styles.contButtons}>
         <AnimatedButton onPress={handlePressFacebook}>
           <FacebookIcon style={styles.contButtonsImage} />
           <Text style={styles.contButtonsTexto}>Continuar con Facebook</Text>
@@ -97,26 +75,26 @@ const Index = () => {
           <AppleIcon style={styles.contButtonsImage} />
           <Text style={styles.contButtonsTexto}>Continuar con Apple</Text>
         </AnimatedButton>
-      </View>
+      </View> */}
 
       {/* Linea que divide  */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
         <View>
-          <Text style={{ width: 50, textAlign: "center", color:"gray" }}>o</Text>
+          <Text style={{ width: 50, textAlign: "center", color: "gray" }}>o</Text>
         </View>
         <View style={{ flex: 1, height: 1, backgroundColor: "gray" }} />
       </View>
 
 
-      {/* Botón de continuar con correo */}
+      {/* Botón de continuar con correo 
       <View style={styles.contButtonLogin}>
         <AnimatedButton onPress={handleLogin}>
-          <Text style={styles.contButtonsTexto}>Continuar con correo</Text>
+          <Text style={styles.contButtonsTexto}>Continuar con correo</Text><
         </AnimatedButton>
       </View>
 
-      {/* Redirigir a Registrarse */}
+      Redirigir a Registrarse 
       <View style={styles.contRegistro}>
         <Text style={styles.contRegistroTexto}>No tengo una cuenta</Text>
         <TouchableOpacity
@@ -126,6 +104,7 @@ const Index = () => {
           <Text style={styles.contRegistroLinkTexto}>Registrarme</Text>
         </TouchableOpacity>
       </View>
+      */}
     </View>
   );
 };
